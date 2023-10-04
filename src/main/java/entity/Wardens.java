@@ -14,14 +14,36 @@ public class Wardens {
 	private String address;
 	private String position;
 	private LocalDate startDate;
+	private int day_off;
+	private Boolean is_Working;
 	private int salary;
+	private int areas_id;
 
 	public Wardens() {
-		super();
 	}
 	
+	
+
+	/**
+	 * @param wardenId
+	 * @param firstName
+	 * @param lastLame
+	 * @param dateOfBirth
+	 * @param isMale
+	 * @param phoneNumber
+	 * @param email
+	 * @param address
+	 * @param position
+	 * @param startDate
+	 * @param day_off
+	 * @param is_Working
+	 * @param salary
+	 * @param areas_id
+	 */
 	public Wardens(int wardenId, String firstName, String lastLame, LocalDate dateOfBirth, String isMale,
-			String phoneNumber, String email, String address, String position, LocalDate startDate, int salary) {
+			String phoneNumber, String email, String address, String position, LocalDate startDate, int day_off,
+			Boolean is_Working, int salary, int areas_id) {
+		super();
 		this.wardenId = wardenId;
 		this.firstName = firstName;
 		this.lastLame = lastLame;
@@ -32,9 +54,13 @@ public class Wardens {
 		this.address = address;
 		this.position = position;
 		this.startDate = startDate;
+		this.day_off = day_off;
+		this.is_Working = is_Working;
 		this.salary = salary;
-		
+		this.areas_id = areas_id;
 	}
+
+
 
 	public int getWardenId() {
 		return wardenId;
@@ -123,13 +149,51 @@ public class Wardens {
 	public void setSalary(int salary) {
 		this.salary = salary;
 	}
+	
+
+	public int getDay_off() {
+		return day_off;
+	}
+
+
+
+	public void setDay_off(int day_off) {
+		this.day_off = day_off;
+	}
+
+
+
+	public Boolean getIs_Working() {
+		return is_Working;
+	}
+
+
+
+	public void setIs_Working(Boolean is_Working) {
+		this.is_Working = is_Working;
+	}
+
+
+
+	public int getAreas_id() {
+		return areas_id;
+	}
+
+
+
+	public void setAreas_id(int areas_id) {
+		this.areas_id = areas_id;
+	}
+
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, dateOfBirth, email, firstName, isMale, lastLame, phoneNumber, position,
-				salary, startDate,  wardenId);
+		return Objects.hash(address, areas_id, dateOfBirth, day_off, email, firstName, isMale, is_Working, lastLame,
+				phoneNumber, position, salary, startDate, wardenId);
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -140,12 +204,18 @@ public class Wardens {
 		if (getClass() != obj.getClass())
 			return false;
 		Wardens other = (Wardens) obj;
-		return Objects.equals(address, other.address) && Objects.equals(dateOfBirth, other.dateOfBirth)
+		return Objects.equals(address, other.address) && areas_id == other.areas_id
+				&& Objects.equals(dateOfBirth, other.dateOfBirth) && day_off == other.day_off
 				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-				&& Objects.equals(isMale, other.isMale) && Objects.equals(lastLame, other.lastLame)
+				&& Objects.equals(isMale, other.isMale) && Objects.equals(is_Working, other.is_Working)
+				&& Objects.equals(lastLame, other.lastLame) && Objects.equals(phoneNumber, other.phoneNumber)
 				&& Objects.equals(position, other.position) && salary == other.salary
-				&& Objects.equals(startDate, other.startDate)&& wardenId == other.wardenId;
+				&& Objects.equals(startDate, other.startDate) && wardenId == other.wardenId;
 	}
+
+
+
+	
 	
 	
 	
