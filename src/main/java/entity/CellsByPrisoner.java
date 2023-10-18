@@ -7,90 +7,74 @@ public class CellsByPrisoner {
 	private int cellNumber;
 	private String status;
 	private String size;
-	private String cellsLocationDescription;
-	private Areas areaId;
-
-	public CellsByPrisoner(int cellId, int cellNumber, String status, String size, String cellsLocationDescription,
-			Areas areaId) {
-
+	private int areaId;
+	private int floor_N;
+	/**
+	 * @param cellId
+	 * @param cellNumber
+	 * @param status
+	 * @param size
+	 * @param areaId
+	 * @param floor_N
+	 */
+	public CellsByPrisoner(int cellId, int cellNumber, String status, String size, int areaId, int floor_N) {
+		super();
 		this.cellId = cellId;
 		this.cellNumber = cellNumber;
 		this.status = status;
 		this.size = size;
-		this.cellsLocationDescription = cellsLocationDescription;
 		this.areaId = areaId;
+		this.floor_N = floor_N;
 	}
-
+	/**
+	 * 
+	 */
 	public CellsByPrisoner() {
-
+		super();
 	}
-
 	public int getCellId() {
 		return cellId;
 	}
-
 	public void setCellId(int cellId) {
 		this.cellId = cellId;
 	}
-
 	public int getCellNumber() {
 		return cellNumber;
 	}
-
 	public void setCellNumber(int cellNumber) {
 		this.cellNumber = cellNumber;
 	}
-
 	public String getStatus() {
 		return status;
 	}
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 	public String getSize() {
 		return size;
 	}
-
 	public void setSize(String size) {
 		this.size = size;
 	}
-
-	public String getCellsLocationDescription() {
-		return cellsLocationDescription;
-	}
-
-	public void setCellsLocationDescription(String cellsLocationDescription) {
-		this.cellsLocationDescription = cellsLocationDescription;
-	}
-
-	public Areas getAreaId() {
+	public int getAreaId() {
 		return areaId;
 	}
-
-	public void setAreaId(Areas areaId) {
+	public void setAreaId(int areaId) {
 		this.areaId = areaId;
 	}
-
+	public int getFloor_N() {
+		return floor_N;
+	}
+	public void setFloor_N(int floor_N) {
+		this.floor_N = floor_N;
+	}
 	@Override
-	public int hashCode() {
-		return Objects.hash(areaId, cellId, cellNumber, cellsLocationDescription, size, status);
+	public String toString() {
+		return "CellsByPrisoner [cellId=" + cellId + ", cellNumber=" + cellNumber + ", status=" + status + ", size="
+				+ size + ", areaId=" + areaId + ", floor_N=" + floor_N + "]";
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CellsByPrisoner other = (CellsByPrisoner) obj;
-		return Objects.equals(areaId, other.areaId) && cellId == other.cellId && cellNumber == other.cellNumber
-				&& Objects.equals(cellsLocationDescription, other.cellsLocationDescription)
-				&& Objects.equals(size, other.size) && Objects.equals(status, other.status);
-	}
+	
 
 	
 	

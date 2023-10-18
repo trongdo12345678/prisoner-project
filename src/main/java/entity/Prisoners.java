@@ -170,6 +170,14 @@ public class Prisoners {
 				&& Objects.equals(nationality, other.nationality) && Objects.equals(punishment, other.punishment)
 				&& Objects.equals(releaseDate, other.releaseDate) && Objects.equals(religion, other.religion);
 	}
+
+	@Override
+	public String toString() {
+		return "Prisoners [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", dateOfBirth="
+				+ dateOfBirth + ", nationality=" + nationality + ", isMale=" + isMale + ", dateOfEntry=" + dateOfEntry
+				+ ", releaseDate=" + releaseDate + ", cellId=" + cellId + ", conviction=" + conviction + ", punishment="
+				+ punishment + ", religion=" + religion + ", image=" + image + "]";
+	}
 	
 
 	

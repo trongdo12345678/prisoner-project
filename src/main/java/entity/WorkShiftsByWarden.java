@@ -1,43 +1,53 @@
 package entity;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class WorkShiftsByWarden {
-	private int shiftId;
-	private Wardens wardenId;
+	private int shiftNumber;
+	private String shiftType;
 	private LocalDate shiftDate;
-	private LocalDate startTime;
-	private LocalDate endTime;
-	private Areas areaId;
+	private Time startTime;
+	private Time endTime;
+	private int areaId;
 	
 	public WorkShiftsByWarden() {
 	}
 
-	public WorkShiftsByWarden(int shiftId, Wardens wardenId, LocalDate shiftDate, LocalDate startTime, LocalDate endTime,
-			Areas areaId) {
-		this.shiftId = shiftId;
-		this.wardenId = wardenId;
+	/**
+	 * @param shiftNumber
+	 * @param shiftType
+	 * @param shiftDate
+	 * @param startTime
+	 * @param endTime
+	 * @param areaId
+	 */
+	public WorkShiftsByWarden(int shiftNumber, String shiftType, LocalDate shiftDate, Time startTime,
+			Time endTime, int areaId) {
+		super();
+		this.shiftNumber = shiftNumber;
+		this.shiftType = shiftType;
 		this.shiftDate = shiftDate;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.areaId = areaId;
 	}
 
-	public int getShiftId() {
-		return shiftId;
+	public int getShiftNumber() {
+		return shiftNumber;
 	}
 
-	public void setShiftId(int shiftId) {
-		this.shiftId = shiftId;
+	public void setShiftNumber(int shiftNumber) {
+		this.shiftNumber = shiftNumber;
 	}
 
-	public Wardens getWardenId() {
-		return wardenId;
+	public String getShiftType() {
+		return shiftType;
 	}
 
-	public void setWardenId(Wardens wardenId) {
-		this.wardenId = wardenId;
+	public void setShiftType(String shiftType) {
+		this.shiftType = shiftType;
 	}
 
 	public LocalDate getShiftDate() {
@@ -48,48 +58,39 @@ public class WorkShiftsByWarden {
 		this.shiftDate = shiftDate;
 	}
 
-	public LocalDate getStartTime() {
+	public Time getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(LocalDate startTime) {
+	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}
 
-	public LocalDate getEndTime() {
+	public Time getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(LocalDate endTime) {
+	public void setEndTime(Time endTime) {
 		this.endTime = endTime;
 	}
 
-	public Areas getAreaId() {
+	
+
+	public int getAreaId() {
 		return areaId;
 	}
 
-	public void setAreaId(Areas areaId) {
+	public void setAreaId(int areaId) {
 		this.areaId = areaId;
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(areaId, endTime, shiftDate, shiftId, startTime, wardenId);
+	public String toString() {
+		return "WorkShiftsByWarden [shiftNumber=" + shiftNumber + ", shiftType=" + shiftType + ", shiftDate="
+				+ shiftDate + ", startTime=" + startTime + ", endTime=" + endTime + ", areaId=" + areaId + "]";
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		WorkShiftsByWarden other = (WorkShiftsByWarden) obj;
-		return Objects.equals(areaId, other.areaId) && Objects.equals(endTime, other.endTime)
-				&& Objects.equals(shiftDate, other.shiftDate) && shiftId == other.shiftId
-				&& Objects.equals(startTime, other.startTime) && Objects.equals(wardenId, other.wardenId);
-	}
+	
 
 	
 	

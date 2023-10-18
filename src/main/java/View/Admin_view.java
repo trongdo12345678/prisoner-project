@@ -41,6 +41,7 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 
 import Valid.Check;
+import dao.PrisonersDao;
 import database.DML;
 import entity.Account;
 import entity.HealthByPrisoner;
@@ -1150,89 +1151,6 @@ public class Admin_view extends JFrame {
 	}
 	protected void btnNewButtonActionPerformed(ActionEvent e) throws SQLException {		
 		
-		String id=txtPId.getText();
-		String firstName=txtFName.getText();
-		String lastName= txtLName.getText();
-		String gender;
-		String nationality= txtN.getText();
-		String cellId=txtCell.getText();
-		String conviction=txtC.getText();
-		String punishment= txtP.getText();
-		String religion= txtR.getText();
-		String image=txtI.getText();
-		String medicalHistory=txtMH.getText();
-		String currentConditions=txtCC.getText();
-		String allergies=txtA.getText();
-		String relativeName=txtRN.getText();
-		String contactInfo=txtCI.getText();
-		String relationship=txtRela.getText();
-		Date datedob=dob.getDate();
-		Date datedoe=doe.getDate();
-		Date daterd=rd.getDate();
-		
-		if(Check.checkNull(id)==false &&
-			Check.checkNull(firstName)==false &&
-			Check.checkNull(lastName)==false &&
-			Check.checkNull(nationality)==false &&
-			Check.checkNull(cellId)==false &&
-			Check.checkNull(conviction)==false &&
-			Check.checkNull(punishment)==false &&
-			Check.checkNull(religion)==false &&
-			Check.checkNull(medicalHistory)==false &&
-			Check.checkNull(currentConditions)==false &&
-			Check.checkNull(allergies)==false &&
-			Check.checkNull(relativeName)==false &&
-			Check.checkNull(contactInfo)==false &&
-			Check.checkNull(relationship)==false ) {		
-				if(Check.checkNumber1(id)==true && Check.checkNumber1(cellId)==true) {
-					if(Check.checkString(firstName)==true &&
-						Check.checkString(lastName)==true &&
-						Check.checkString(nationality)==true &&
-						Check.checkString(conviction)==true &&
-						Check.checkString(punishment)==true &&
-						Check.checkString(religion)==true &&
-						Check.checkString(medicalHistory)==true &&
-						Check.checkString(allergies)==true &&
-						Check.checkString(relativeName)==true &&
-						Check.checkString(contactInfo)==true &&
-						Check.checkString(currentConditions)==true ) {
-						
-						Prisoners pr=new Prisoners();
-						pr.setDateOfBirth(LocalDate.ofInstant(datedob.toInstant(), ZoneId.systemDefault()));
-						pr.setDateOfEntry(LocalDate.ofInstant(datedoe.toInstant(), ZoneId.systemDefault()));
-						pr.setReleaseDate(LocalDate.ofInstant(daterd.toInstant(), ZoneId.systemDefault()));
-						if(rdbtnMale.isSelected()) {
-							 pr.setIsMale("nam");
-						}else {pr.setIsMale("nu");}
-						pr.setId(Integer.parseInt(id));
-						pr.setFirstName(firstName);
-						pr.setLastName(lastName);
-						pr.setNationality(nationality);
-						pr.setCellId(Integer.parseInt(cellId));
-						pr.setConviction(conviction);
-						pr.setPunishment(punishment);
-						pr.setReligion(religion);
-						pr.setImage(image);
-						DML.insertPrisoner(pr);
-						
-						RelativesByPrisoner rb=new RelativesByPrisoner();	
-						rb.setId(Integer.parseInt(id));
-						rb.setRelativeName(relativeName);
-						rb.setContactInfo(contactInfo);
-						rb.setRelationship(relationship);
-						DML.insertRelative(rb);
-						
-						HealthByPrisoner hp=new HealthByPrisoner();
-						hp.setId(Integer.parseInt(id));
-						hp.setAllergies(allergies);
-						hp.setCurrentConditions(currentConditions);
-						hp.setMedicalHistory(medicalHistory);
-						DML.insertHealth(hp);
-						
-					}else {JOptionPane.showMessageDialog(this, "Except for prisoner id and cell id everything does not contain numbers","ERROR",JOptionPane.ERROR_MESSAGE);}
-				} else {JOptionPane.showMessageDialog(this, "Prisoner ID and cell ID must be numeric","ERROR",JOptionPane.ERROR_MESSAGE);}
-		} else {JOptionPane.showMessageDialog(this, "Please do not leave information blank","ERROR",JOptionPane.ERROR_MESSAGE);}
-			
 		
 			
 		
