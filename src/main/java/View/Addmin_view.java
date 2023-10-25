@@ -27,6 +27,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -38,6 +41,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import Valid.Check;
+import dao.AdminDao;
 import dao.AreasDAO;
 import dao.CellDao;
 import dao.PrisonersDao;
@@ -244,9 +248,9 @@ public class Addmin_view extends JFrame {
 	private JLabel lblPID;
 	private JLabel lblAreas;
 	private JLabel lblCellNumber;
-	private JTextField textField_1;
+	private JTextField txtChangeID;
 	private JComboBox comboBoxChange;
-	private JTextField textField_2;
+	private JTextField txtCellChange;
 	private JButton btnChange_1;
 	private JLabel lblCellId_1;
 	private JComboBox comboBox_1;
@@ -278,8 +282,14 @@ public class Addmin_view extends JFrame {
 	private JButton UpdateP;
 	private JLabel lblNewLabel_3;
 	private JButton btnShow;
+	int cellID=0;
+	int arID=0;
+	int cellIDChange;
 	
 	private int areaid=0;
+	private int cell_idUpdate =0;
+	private final ButtonGroup buttonGroup_1 = new ButtonGroup();
+	private JButton btnCancel;
 
 	/**
 	 * Launch the application.
@@ -334,12 +344,12 @@ public class Addmin_view extends JFrame {
 		setContentPane(contentPane);
 		
 		panel_Body = new JPanel();
-		panel_Body.setBorder(null);
+		panel_Body.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
 		panel_Body.setBackground(new Color(192, 192, 192));
 		panel_Body.setLayout(new CardLayout(0, 0));
 		
 		panel_prisoners = new JPanel();
-		panel_prisoners.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
+		panel_prisoners.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		panel_prisoners.setBackground(new Color(0, 40, 40));
 		panel_Body.add(panel_prisoners, "name_1038379110987700");
 		panel_prisoners.setLayout(new BorderLayout(0, 0));
@@ -807,15 +817,30 @@ public class Addmin_view extends JFrame {
 		lblCellNumber.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblCellNumber.setBackground(new Color(0, 128, 64));
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		txtChangeID = new JTextField();
+		txtChangeID.setEditable(false);
+		txtChangeID.setForeground(new Color(255, 0, 0));
+		txtChangeID.setColumns(10);
 		
 		comboBoxChange = new JComboBox();
+		AreasDAO.selectTableAreas().forEach(p->{
+			comboBoxChange.addItem(p.getAreaName());
+		});
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
+		txtCellChange = new JTextField();
+		txtCellChange.setColumns(10);
 		
 		btnChange_1 = new JButton("Change");
+		btnChange_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					btnChange_1ActionPerformed(e);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnChange_1.setForeground(Color.WHITE);
 		btnChange_1.setBackground(new Color(255, 0, 0));
 		GroupLayout gl_panel_12 = new GroupLayout(panel_12);
@@ -828,7 +853,7 @@ public class Addmin_view extends JFrame {
 						.addGroup(Alignment.LEADING, gl_panel_12.createSequentialGroup()
 							.addComponent(lblCellNumber, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+							.addComponent(txtCellChange, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
 						.addGroup(Alignment.LEADING, gl_panel_12.createSequentialGroup()
 							.addComponent(lblAreas, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -836,7 +861,7 @@ public class Addmin_view extends JFrame {
 						.addGroup(Alignment.LEADING, gl_panel_12.createSequentialGroup()
 							.addComponent(lblPID, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textField_1, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)))
+							.addComponent(txtChangeID, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
 					.addGap(6))
@@ -848,7 +873,7 @@ public class Addmin_view extends JFrame {
 						.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_panel_12.createParallelGroup(Alignment.BASELINE)
 							.addComponent(lblPID, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(txtChangeID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_12.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(comboBoxChange)
@@ -856,7 +881,7 @@ public class Addmin_view extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_12.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblCellNumber, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtCellChange, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnChange_1, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
 		);
@@ -978,6 +1003,7 @@ public class Addmin_view extends JFrame {
 		lblFirstName_1.setForeground(Color.WHITE);
 		
 		txtShowUpdateFN = new JTextField();
+		txtShowUpdateFN.setEnabled(true);
 		txtShowUpdateFN.setHorizontalAlignment(SwingConstants.LEFT);
 		txtShowUpdateFN.setColumns(10);
 		
@@ -1026,8 +1052,10 @@ public class Addmin_view extends JFrame {
 		lblGender1_1.setForeground(Color.WHITE);
 		
 		male_1 = new JRadioButton("Male");
+		buttonGroup_1.add(male_1);
 		
 		Female_1 = new JRadioButton("Female");
+		buttonGroup_1.add(Female_1);
 		Female_1.setSelected(true);
 		
 		lblPrisonerID_2 = new JLabel("release Date");
@@ -1035,18 +1063,21 @@ public class Addmin_view extends JFrame {
 		lblPrisonerID_2.setForeground(Color.WHITE);
 		
 		ShowUpdateRD = new JDateChooser();
+		ShowUpdateRD.setDateFormatString("dd-MM-yyyy");
 		
 		lblPrisonerID_3 = new JLabel("Date Of Entry");
 		lblPrisonerID_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPrisonerID_3.setForeground(Color.WHITE);
 		
 		ShowUpdateDOE = new JDateChooser();
+		ShowUpdateDOE.setDateFormatString("dd-MM-yyyy");
 		
 		lblPrisonerID_4 = new JLabel("Date Of Birth");
 		lblPrisonerID_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPrisonerID_4.setForeground(Color.WHITE);
 		
 		ShowUpdateDOB = new JDateChooser();
+		ShowUpdateDOB.setDateFormatString("dd-MM-yyyy");
 		
 		lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setBackground(new Color(0, 40, 40));
@@ -1061,8 +1092,27 @@ public class Addmin_view extends JFrame {
 		txtShowUpdateID.setColumns(10);
 		
 		btnShow = new JButton("Show");
+		btnShow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					btnShowActionPerformed(e);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnShow.setForeground(Color.WHITE);
 		btnShow.setBackground(Color.BLACK);
+		
+		btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCancelActionPerformed(e);
+			}
+		});
+		btnCancel.setForeground(Color.WHITE);
+		btnCancel.setBackground(Color.BLACK);
 		GroupLayout gl_panel_14 = new GroupLayout(panel_14);
 		gl_panel_14.setHorizontalGroup(
 			gl_panel_14.createParallelGroup(Alignment.LEADING)
@@ -1072,7 +1122,8 @@ public class Addmin_view extends JFrame {
 						.addComponent(btnShow, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_panel_14.createParallelGroup(Alignment.TRAILING, false)
 							.addComponent(lblPrisonerID_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(txtShowUpdateID, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)))
+							.addComponent(txtShowUpdateID, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
+						.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE))
 					.addGap(84)
 					.addComponent(lblNewLabel_3, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -1088,37 +1139,32 @@ public class Addmin_view extends JFrame {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(txtShowUpdateLN, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_panel_14.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED, 1, Short.MAX_VALUE)
 									.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblGender1_1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-										.addComponent(nationality_1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_panel_14.createSequentialGroup()
+											.addGap(6)
+											.addComponent(nationality_1, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE))
+										.addComponent(lblGender1_1, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
 										.addGroup(gl_panel_14.createSequentialGroup()
 											.addComponent(male_1, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(Female_1, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE))
-										.addComponent(txtShowUpdateN, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE))
-									.addGap(6)))
+										.addComponent(txtShowUpdateN, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE))))
+							.addGap(24)
 							.addGroup(gl_panel_14.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_panel_14.createSequentialGroup()
-									.addGap(18)
-									.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblPrisonerID_4, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblPrisonerID_3, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblaaaa, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
-									.addPreferredGap(ComponentPlacement.RELATED, 7, Short.MAX_VALUE))
-								.addGroup(gl_panel_14.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblPunishment, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-									.addGap(6))))
+								.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
+									.addComponent(lblPrisonerID_4, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblPrisonerID_3, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblaaaa, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblPunishment, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(gl_panel_14.createSequentialGroup()
 							.addComponent(lblReligion, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(txtShowUpdateR, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addComponent(lblPrisonerID_2, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-							.addGap(6)))
+							.addComponent(lblPrisonerID_2, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
 					.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
 						.addComponent(ShowUpdateDOB, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_panel_14.createParallelGroup(Alignment.TRAILING, false)
@@ -1126,12 +1172,25 @@ public class Addmin_view extends JFrame {
 							.addComponent(ShowUpdateDOE, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
 						.addComponent(txtShowUpdateC, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtShowUpdateP, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE))
-					.addGap(73))
+					.addGap(65))
 		);
 		gl_panel_14.setVerticalGroup(
 			gl_panel_14.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_14.createSequentialGroup()
-					.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_14.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_14.createSequentialGroup()
+									.addComponent(lblPrisonerID_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(txtShowUpdateID, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(btnShow, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblNewLabel_3, GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
+							.addGap(24))
 						.addGroup(gl_panel_14.createSequentialGroup()
 							.addGap(14)
 							.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
@@ -1160,24 +1219,16 @@ public class Addmin_view extends JFrame {
 										.addComponent(lblaaaa, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 										.addComponent(txtShowUpdateC, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 										.addComponent(txtShowUpdateN, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
-								.addComponent(ShowUpdateRD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_panel_14.createSequentialGroup()
-							.addContainerGap()
+								.addComponent(ShowUpdateRD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel_14.createSequentialGroup()
-									.addComponent(lblPrisonerID_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtShowUpdateID, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(btnShow, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE))
-								.addComponent(lblNewLabel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel_14.createParallelGroup(Alignment.BASELINE)
-						.addComponent(male_1)
-						.addComponent(Female_1)
-						.addComponent(lblGender1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPunishment, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtShowUpdateP, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_14.createParallelGroup(Alignment.BASELINE)
+									.addComponent(lblPunishment, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+									.addComponent(txtShowUpdateP, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_14.createParallelGroup(Alignment.BASELINE)
+									.addComponent(lblGender1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+									.addComponent(male_1)
+									.addComponent(Female_1)))))
 					.addContainerGap())
 		);
 		panel_14.setLayout(gl_panel_14);
@@ -1185,7 +1236,12 @@ public class Addmin_view extends JFrame {
 		UpdateP = new JButton("Update");
 		UpdateP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UpdatePActionPerformed(e);
+				try {
+					UpdatePActionPerformed(e);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		UpdateP.setForeground(Color.WHITE);
@@ -1602,7 +1658,7 @@ public class Addmin_view extends JFrame {
 		panel_areas.setLayout(gl_panel_areas);
 		
 		panel_account = new JPanel();
-		panel_account.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_account.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		panel_account.setBackground(new Color(0, 40, 40));
 		panel_Body.add(panel_account, "name_1038386697681100");
 		
@@ -2088,6 +2144,7 @@ public class Addmin_view extends JFrame {
 		panel_13.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		lblP = new JLabel("Prioners");
+		//lblP.setIcon(new ImageIcon("C:\\Users\\Quoc Ky\\eclipse-workspace\\TuNhan\\images\\prionericon.png").getIconHeight());
 		lblP.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -2480,6 +2537,9 @@ public class Addmin_view extends JFrame {
 				lblShowC.setText(String.valueOf(p.getCellNumber()));
 				lblShowA.setText(p.getAreaName().toString());
 				lblShowGender.setText(p.getIsMale().toString());
+				txtChangeID.setText(String.valueOf(p.getId()));
+				txtChangeID.setEditable(false);
+				
 				
 				lblImage.setIcon(
 						new ImageIcon(
@@ -2595,10 +2655,7 @@ public class Addmin_view extends JFrame {
 						});
 						CellDao.selectTableCell().forEach(p->{
 							if(areaid==p.getAreaId()&& Integer.parseInt(cell)==p.getCellNumber()) {
-								System.out.println(p.getCellId());
 								pr.setCellId(p.getCellId());
-							} else {
-								System.out.println("fdsfd");
 							}
 						});
 						pr.setDateOfBirth(LocalDate.ofInstant(datedob.toInstant(), ZoneId.systemDefault()));
@@ -2615,8 +2672,7 @@ public class Addmin_view extends JFrame {
 						pr.setPunishment(punishment);
 						pr.setReligion(religion);
 						pr.setImage(image);
-//						PrisonersDao.insertPrisoner(pr);
-						System.out.println(pr);
+						PrisonersDao.insertPrisoner(pr);
 					}else {JOptionPane.showMessageDialog(this, "Except for prisoner id and cell id everything does not contain numbers","ERROR",JOptionPane.ERROR_MESSAGE);}
 				} else {JOptionPane.showMessageDialog(this, "Prisoner ID and cell ID must be numeric","ERROR",JOptionPane.ERROR_MESSAGE);}
 		} else {JOptionPane.showMessageDialog(this, "Please do not leave information blank","ERROR",JOptionPane.ERROR_MESSAGE);}
@@ -2757,7 +2813,143 @@ public class Addmin_view extends JFrame {
 	}
 	protected void btnDelete1ActionPerformed(ActionEvent e) {
 	}
-	protected void UpdatePActionPerformed(ActionEvent e) {
+	protected void btnShowActionPerformed(ActionEvent e) throws SQLException {
+		String a=txtShowUpdateID.getText();
+		if(Check.checkNull(a)==false) {
+			if(Check.checkNumber1(a)==true) {
+				DML.selectTablePrioners().forEach(p->{
+					if(p.getId()==Integer.parseInt(a)) {
+						txtShowUpdateLN.setText(p.getLastName());
+						txtShowUpdateFN.setText(p.getFirstName());
+						txtShowUpdateR.setText(p.getReligion());
+						txtShowUpdateP.setText(p.getPunishment());
+						txtShowUpdateN.setText(p.getNationality());
+						txtShowUpdateC.setText(p.getConviction());
+						txtShowUpdateID.setEnabled(false);
+						if(p.getIsMale().equals("Male")) {
+							male_1.setSelected(rootPaneCheckingEnabled);
+						} else {Female_1.setSelected(rootPaneCheckingEnabled);}
+						SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					        try {
+								Date dob = simpleDateFormat.parse(p.getDateOfBirth().toString());
+								Date doe = simpleDateFormat.parse(p.getDateOfEntry().toString());
+								Date rD = simpleDateFormat.parse(p.getReleaseDate().toString());
+								ShowUpdateDOB.setDate(dob);
+								ShowUpdateDOE.setDate(doe);
+								ShowUpdateRD.setDate(rD);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} 
+					}
+				});
+			}
+		}
+	}
+	protected void UpdatePActionPerformed(ActionEvent e) throws SQLException {
+		String ShowUpdateLN=txtShowUpdateLN.getText();
+		String ShowUpdateFN=txtShowUpdateFN.getText();
+		String ShowUpdateC=txtShowUpdateC.getText();
+		String ShowUpdateP=txtShowUpdateP.getText();
+		String ShowUpdateN=txtShowUpdateN.getText();
+		String ShowUpdateR=txtShowUpdateR.getText();
+		Date ShowUpdate1DOE=ShowUpdateDOE.getDate();
+		Date ShowUpdate1DOB=ShowUpdateDOB.getDate();
+		Date ShowUpdate1RD=ShowUpdateRD.getDate();
+		String id=txtShowUpdateID.getText();
+		cell_idUpdate=0;
+		
+		LocalDate.ofInstant(ShowUpdate1DOB.toInstant(), ZoneId.systemDefault());
+		PrisonersDao.selectTablePrisoners().forEach(p->{
+			if(p.getId()==Integer.parseInt(id)) {
+				cell_idUpdate=p.getCellId();
+			}
+		});
+		Prisoners pr=new Prisoners();
+		pr.setId(Integer.parseInt(id));
+		pr.setLastName(ShowUpdateLN);
+		pr.setFirstName(ShowUpdateFN);
+		pr.setConviction(ShowUpdateC);
+		pr.setNationality(ShowUpdateN);
+		pr.setReligion(ShowUpdateR);
+		pr.setPunishment(ShowUpdateP);
+		pr.setCellId(cell_idUpdate);
+		pr.setIsMale(id);
+		if(male_1.isSelected()) {
+			pr.setIsMale("Male");
+		}else {pr.setIsMale("Female");}
+		pr.setDateOfBirth(LocalDate.ofInstant(ShowUpdate1DOB.toInstant(), ZoneId.systemDefault()));
+		pr.setDateOfEntry(LocalDate.ofInstant(ShowUpdate1DOE.toInstant(), ZoneId.systemDefault()));
+		pr.setReleaseDate(LocalDate.ofInstant(ShowUpdate1RD.toInstant(), ZoneId.systemDefault()));
+		PrisonersDao.updatePrioners(pr);
+
+	}
+	protected void btnCancelActionPerformed(ActionEvent e) {
+		txtShowUpdateID.setEnabled(true);
+		txtShowUpdateID.setText("");
+		txtShowUpdateLN.setText("");
+		txtShowUpdateFN.setText("");
+		txtShowUpdateR.setText("");
+		txtShowUpdateP.setText("");
+		txtShowUpdateN.setText("");
+		txtShowUpdateC.setText("");
+		ShowUpdateDOB.setDate(new Date());
+		ShowUpdateDOE.setDate(new Date());
+		ShowUpdateRD.setDate(new Date());
+		Female_1.setSelected(rootPaneCheckingEnabled);
+	}
+	protected void btnChange_1ActionPerformed(ActionEvent e) throws SQLException {
+		String idS=txtChangeID.getText();
+		String ar=(String) comboBoxChange.getSelectedItem();
+		String cell=txtCellChange.getText();
+		
+		
+		try {
+			if(Check.checkNull(cell)==false && Check.checkNull(idS)==false) {
+				int id=Integer.parseInt(idS);
+				int cellN=Integer.parseInt(txtCellChange.getText());
+			
+				DML.selectTablePrioners().forEach(p->{
+					if(p.getId()==id) {
+						cellID=p.getCellId();					}
+				});
+				AreasDAO.selectTableAreas().forEach(p->{
+					if(p.getAreaName().equals(ar)) {
+						arID=p.getAreaId();					}
+				});
+				CellDao.selectTableCell().forEach(p->{
+						if(  cellN==p.getCellNumber() && arID==p.getAreaId() ) {
+							cellIDChange=p.getCellId();
+						}
+				});
+				if(cellID!=cellIDChange) {
+					Prisoners pr=new Prisoners();
+					pr.setId(id);
+					pr.setCellId(cellIDChange);
+					String a=JOptionPane.showInputDialog(this, "Enter KeyPass");
+					if(Check.checkNull(a)) {
+						if(Check.checkNumber1(a)) {
+							AdminDao.selectTableAdmin().forEach(p->{
+								if(Integer.parseInt(a)==p.getKey()) {
+									try {
+										PrisonersDao.changeCell(pr);
+										txtChangeID.setText(null);
+										txtCellChange.setText(null);
+										JOptionPane.showMessageDialog(this, "succses","ERROR",JOptionPane.ERROR_MESSAGE);
+									} catch (SQLException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+								}else {JOptionPane.showMessageDialog(this, "Error","ERROR",JOptionPane.ERROR_MESSAGE);
+}
+							});
+						}
+					}
+
+				}else {JOptionPane.showMessageDialog(this, "KHong trung phong giam","ERROR",JOptionPane.ERROR_MESSAGE);};
+			}
+		} catch (Exception e2) {
+		}
 	}
 }
 
