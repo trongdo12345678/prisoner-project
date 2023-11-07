@@ -4,12 +4,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.AreasDAO;
+import dao.CellDao;
+import dao.PrisonersDao;
 import database.ConnectToDB;
 import database.DML;
 import entity.Account;
 
 
 public class Check {
+	
+	static Boolean checkEx=false;
+	static Boolean checkC;
 	private static int check1;
 	public static Boolean checkNull(String a) {
 		if(a.isEmpty()) {
@@ -84,6 +90,27 @@ public class Check {
 			return 1;
 		}
 		return 2;
+	}
+	public static Boolean checkExistP(int id) throws SQLException {
+		PrisonersDao.selectTablePrisoners().forEach(p->{
+			if(p.getId()==id) {
+				checkEx=true;
+				return;
+			}
+		});
+		return checkEx;
+	}
+	public static Boolean checkExistC(int ar,int cellN) throws SQLException {
+		checkC=false;
+		CellDao.selectTableCell().forEach(p->{
+			if(p.getAreaId()==ar) {
+				if(p.getCellNumber()==cellN) {
+					checkC=true;
+					return;
+				}
+			}
+		});
+		return checkC;
 	}
 	
 }

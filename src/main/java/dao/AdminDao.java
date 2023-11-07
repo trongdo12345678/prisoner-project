@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import database.ConnectToDB;
 import entity.Admin;
 import entity.Areas;
@@ -34,6 +36,18 @@ public class AdminDao {
 			list.add(new Admin(rs.getString("username"),rs.getString("password"),rs.getString("email"),rs.getInt("key")));
 		}
 		return list;
+	}
+	public static void updatePass(Admin ad) throws SQLException {
+		ps=ConnectToDB.getConn().prepareStatement("UPDATE Admin SET password=? WHERE username='admin'");	
+		 	ps.setString(1, ad.getPassword());
+		ps.executeUpdate();
+		ConnectToDB.getConn().close();
+	}
+	public static void updateKey(Admin ad) throws SQLException {
+		ps=ConnectToDB.getConn().prepareStatement("UPDATE Admin SET key=? WHERE username='admin'");	
+		 	ps.setInt(1, ad.getKey());
+		ps.executeUpdate();
+		ConnectToDB.getConn().close();
 	}
 	
 }

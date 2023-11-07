@@ -16,6 +16,10 @@ public class P_C_A {
 	private String punishment;
 	private String religion;
 	private String image;
+	private int healthId;//identity
+	private String medicalHistory;
+	private String currentConditions;
+	private String allergies;
 	private int cellNumber;
 	private String status;
 	private String size;
@@ -25,6 +29,14 @@ public class P_C_A {
 	private String areaName;
 	private String description;
 	private String areasLocationDescription;
+	private int relativeId; //entity
+	private String relativeName;
+	private String contactInfo;
+	private String relationship;
+	private int CCCD;
+	private String imageR;
+	private int wardid;
+	private String employment_name;
 	/**
 	 * 
 	 */
@@ -81,6 +93,225 @@ public class P_C_A {
 		this.areaName = areaName;
 		this.description = description;
 		this.areasLocationDescription = areasLocationDescription;
+	}
+	
+	/**
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param dateOfBirth
+	 * @param nationality
+	 * @param isMale
+	 * @param dateOfEntry
+	 * @param releaseDate
+	 * @param cellId
+	 * @param conviction
+	 * @param punishment
+	 * @param religion
+	 * @param image
+	 * @param healthId
+	 * @param medicalHistory
+	 * @param currentConditions
+	 * @param allergies
+	 * @param cellNumber
+	 * @param status
+	 * @param size
+	 * @param cellsLocationDescription
+	 * @param floor_N
+	 * @param areaId
+	 * @param areaName
+	 * @param description
+	 * @param areasLocationDescription
+	 */
+	public P_C_A(int id, String firstName, String lastName, LocalDate dateOfBirth, String nationality, String isMale,
+			LocalDate dateOfEntry, LocalDate releaseDate, int cellId, String conviction, String punishment,
+			String religion, String image, int healthId, String medicalHistory, String currentConditions,
+			String allergies, int cellNumber, String status, String size, String cellsLocationDescription, int floor_N,
+			int areaId, String areaName, String description, String areasLocationDescription) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.nationality = nationality;
+		this.isMale = isMale;
+		this.dateOfEntry = dateOfEntry;
+		this.releaseDate = releaseDate;
+		this.cellId = cellId;
+		this.conviction = conviction;
+		this.punishment = punishment;
+		this.religion = religion;
+		this.image = image;
+		this.healthId = healthId;
+		this.medicalHistory = medicalHistory;
+		this.currentConditions = currentConditions;
+		this.allergies = allergies;
+		this.cellNumber = cellNumber;
+		this.status = status;
+		this.size = size;
+		this.cellsLocationDescription = cellsLocationDescription;
+		this.floor_N = floor_N;
+		this.areaId = areaId;
+		this.areaName = areaName;
+		this.description = description;
+		this.areasLocationDescription = areasLocationDescription;
+	}
+	
+	/**
+	 * @param id
+	 * @param healthId
+	 * @param medicalHistory
+	 * @param currentConditions
+	 * @param allergies
+	 * @param cellNumber
+	 * @param floor_N
+	 * @param areaName
+	 */
+	public P_C_A(int id, int healthId, String medicalHistory, String currentConditions, String allergies,
+			int cellNumber, int floor_N, String areaName) {
+		super();
+		this.id = id;
+		this.healthId = healthId;
+		this.medicalHistory = medicalHistory;
+		this.currentConditions = currentConditions;
+		this.allergies = allergies;
+		this.cellNumber = cellNumber;
+		this.floor_N = floor_N;
+		this.areaName = areaName;
+	}
+	/**
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param dateOfBirth
+	 * @param nationality
+	 * @param isMale
+	 * @param dateOfEntry
+	 * @param releaseDate
+	 * @param cellId
+	 * @param conviction
+	 * @param punishment
+	 * @param religion
+	 * @param image
+	 * @param healthId
+	 * @param medicalHistory
+	 * @param currentConditions
+	 * @param allergies
+	 */
+	
+	public P_C_A(int id, String firstName, String lastName, LocalDate dateOfBirth, String nationality, String isMale,
+			LocalDate dateOfEntry, LocalDate releaseDate, int cellId, String conviction, String punishment,
+			String religion, String image, int healthId, String medicalHistory, String currentConditions,
+			String allergies) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.nationality = nationality;
+		this.isMale = isMale;
+		this.dateOfEntry = dateOfEntry;
+		this.releaseDate = releaseDate;
+		this.cellId = cellId;
+		this.conviction = conviction;
+		this.punishment = punishment;
+		this.religion = religion;
+		this.image = image;
+		this.healthId = healthId;
+		this.medicalHistory = medicalHistory;
+		this.currentConditions = currentConditions;
+		this.allergies = allergies;
+	}
+	
+	/**
+	 * @param id
+	 * @param cellNumber
+	 * @param floor_N
+	 * @param areaName
+	 * @param relativeId
+	 * @param relativeName
+	 * @param contactInfo
+	 * @param relationship
+	 * @param cCCD
+	 * @param imageR
+	 */
+	public P_C_A(int id, int cellNumber, int floor_N, String areaName, int relativeId, String relativeName,
+			String contactInfo, String relationship, int cCCD, String imageR) {
+		super();
+		this.id = id;
+		this.cellNumber = cellNumber;
+		this.floor_N = floor_N;
+		this.areaName = areaName;
+		this.relativeId = relativeId;
+		this.relativeName = relativeName;
+		this.contactInfo = contactInfo;
+		this.relationship = relationship;
+		CCCD = cCCD;
+		this.imageR = imageR;
+	}
+	
+	/**
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param dateOfBirth
+	 * @param nationality
+	 * @param isMale
+	 * @param dateOfEntry
+	 * @param releaseDate
+	 * @param cellId
+	 * @param conviction
+	 * @param punishment
+	 * @param religion
+	 * @param image
+	 * @param cellNumber
+	 * @param status
+	 * @param size
+	 * @param cellsLocationDescription
+	 * @param floor_N
+	 * @param areaId
+	 * @param areaName
+	 * @param description
+	 * @param areasLocationDescription
+	 * @param wardid
+	 */
+	public P_C_A(int id, String firstName, String lastName, LocalDate dateOfBirth, String nationality, String isMale,
+			LocalDate dateOfEntry, LocalDate releaseDate, int cellId, String conviction, String punishment,
+			String religion, String image, int cellNumber, String status, String size, String cellsLocationDescription,
+			int floor_N, int areaId, String areaName, String description, String areasLocationDescription, int wardid) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.nationality = nationality;
+		this.isMale = isMale;
+		this.dateOfEntry = dateOfEntry;
+		this.releaseDate = releaseDate;
+		this.cellId = cellId;
+		this.conviction = conviction;
+		this.punishment = punishment;
+		this.religion = religion;
+		this.image = image;
+		this.cellNumber = cellNumber;
+		this.status = status;
+		this.size = size;
+		this.cellsLocationDescription = cellsLocationDescription;
+		this.floor_N = floor_N;
+		this.areaId = areaId;
+		this.areaName = areaName;
+		this.description = description;
+		this.areasLocationDescription = areasLocationDescription;
+		this.wardid = wardid;
+	}
+	/**
+	 * @param wardid
+	 * @param employment_name
+	 */
+	public P_C_A(int wardid, String employment_name) {
+		super();
+		this.wardid = wardid;
+		this.employment_name = employment_name;
 	}
 	public int getId() {
 		return id;
@@ -213,6 +444,81 @@ public class P_C_A {
 	}
 	public void setAreasLocationDescription(String areasLocationDescription) {
 		this.areasLocationDescription = areasLocationDescription;
+	}
+	
+	public int getHealthId() {
+		return healthId;
+	}
+	public void setHealthId(int healthId) {
+		this.healthId = healthId;
+	}
+	public String getMedicalHistory() {
+		return medicalHistory;
+	}
+	public void setMedicalHistory(String medicalHistory) {
+		this.medicalHistory = medicalHistory;
+	}
+	public String getCurrentConditions() {
+		return currentConditions;
+	}
+	public void setCurrentConditions(String currentConditions) {
+		this.currentConditions = currentConditions;
+	}
+	public String getAllergies() {
+		return allergies;
+	}
+	public void setAllergies(String allergies) {
+		this.allergies = allergies;
+	}
+	
+	public int getRelativeId() {
+		return relativeId;
+	}
+	public void setRelativeId(int relativeId) {
+		this.relativeId = relativeId;
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
+	public String getContactInfo() {
+		return contactInfo;
+	}
+	public void setContactInfo(String contactInfo) {
+		this.contactInfo = contactInfo;
+	}
+	public String getRelationship() {
+		return relationship;
+	}
+	public void setRelationship(String relationship) {
+		this.relationship = relationship;
+	}
+	public int getCCCD() {
+		return CCCD;
+	}
+	public void setCCCD(int cCCD) {
+		CCCD = cCCD;
+	}
+	public String getImageR() {
+		return imageR;
+	}
+	public void setImageR(String imageR) {
+		this.imageR = imageR;
+	}
+	
+	public int getWardid() {
+		return wardid;
+	}
+	public void setWardid(int wardid) {
+		this.wardid = wardid;
+	}
+	public String getEmployment_name() {
+		return employment_name;
+	}
+	public void setEmployment_name(String employment_name) {
+		this.employment_name = employment_name;
 	}
 	@Override
 	public String toString() {

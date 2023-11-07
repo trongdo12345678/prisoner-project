@@ -40,8 +40,19 @@ public class Prisoners {
 
 	public Prisoners() {
 	}
+	
 
 	
+	/**
+	 * @param id
+	 * @param cellId
+	 */
+	public Prisoners(int id, int cellId) {
+		super();
+		this.id = id;
+		this.cellId = cellId;
+	}
+
 	//getter setter
 	public int getId() {
 		return id;

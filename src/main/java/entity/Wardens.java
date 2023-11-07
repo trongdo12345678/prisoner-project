@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Wardens {
-	private int wardenId ;
+	public static int wardenId ;
 	private String firstName;
 	private String lastLame;
 	private LocalDate dateOfBirth;

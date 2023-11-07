@@ -21,30 +21,7 @@ public class DML {
 	private static PreparedStatement ps=null;
 	private static ResultSet rs=null;
 	
-	public static void insertRelative(RelativesByPrisoner rb) throws SQLException {
-		ps=ConnectToDB.getConn().prepareStatement(
-				"INSERT INTO RelativesByPrisoner (prisoner_id,relative_name,contact_info,relationship) "
-				+ "values(?,?,?,?)");
-		ps.setInt(1,rb.getId());
-		ps.setString(2,rb.getRelativeName());
-		ps.setString(3,rb.getContactInfo());
-		ps.setString(4,rb.getRelationship() ); 
-		
-		ps.executeUpdate();
-		ConnectToDB.getConn().close();	
-	}
-	public static void insertHealth(HealthByPrisoner hp) throws SQLException {
-		ps=ConnectToDB.getConn().prepareStatement(
-				"INSERT INTO HealthByPrisoner (prisoner_id,medical_history,current_conditions,allergies) "
-				+ "values(?,?,?,?)");
-		ps.setInt(1,hp.getId());
-		ps.setString(2,hp.getMedicalHistory());
-		ps.setString(3,hp.getCurrentConditions());
-		ps.setString(4,hp.getAllergies() ); 
-		
-		ps.executeUpdate();
-		ConnectToDB.getConn().close();	
-	}
+	
 	public static void insertAccount(Account ac) throws SQLException {
 		ps=ConnectToDB.getConn().prepareStatement(
 				"INSERT INTO Account (warden_id,username,password,active) "
@@ -89,57 +66,32 @@ public class DML {
 		}
 		return  list;
 	}
-	public static List<All1> selectTableWardens() throws SQLException{
-		ps=ConnectToDB.getConn().prepareStatement("SELECT\r\n"
-				+ "Wardens.*,\r\n"
-				+ "WorkShiftsByWarden.*,\r\n"
-				+ "Areas.* \r\n"
-				+ "FROM\r\n"
-				+ "Wardens\r\n"
-				+ "INNER JOIN WorkShiftsByWarden\r\n"
-				+ "ON\r\n"
-				+ "Wardens.shift_number =WorkShiftsByWarden.shift_number\r\n"
-				+ "INNER JOIN\r\n"
-				+ "Areas\r\n"
-				+ "ON\r\n"
-				+ "WorkShiftsByWarden.area_id =Areas.area_id\r\n");
-		rs=ps.executeQuery();
-		List<All1> list=new ArrayList<>();
-		while(rs.next()) {
-			list.add(new All1(rs.getInt("warden_id"),rs.getString("first_name"),rs.getString("last_name"),(rs.getDate("date_of_birth")).toLocalDate(),rs.getString("gender"),rs.getString("phone_number"),rs.getString("email"),rs.getString("address"),rs.getString("position"),rs.getDate("start_date").toLocalDate(),rs.getInt("day_off"),rs.getBoolean("is_Working"),rs.getInt("salary"),rs.getInt("shift_number"),
-								rs.getString("shift_type"),rs.getDate("shift_date").toLocalDate(),rs.getTime("start_time"),rs.getTime("end_time"),rs.getInt("area_id"),rs.getString("area_name"),rs.getString("description"),rs.getString("areas_location_description")));
-		}
-		return list;
-	}
-	public static List<P_C_A> selectTablePrioners() throws SQLException{
-		
-		ps=ConnectToDB.getConn().prepareStatement("SELECT\r\n"
-				+ "Prisoners.*,\r\n"
-				+ "CellsByPrisoner.*,\r\n"
-				+ "Areas.*\r\n"
-				+ "FROM\r\n"
-				+ "Prisoners\r\n"
-				+ "INNER JOIN CellsByPrisoner\r\n"
-				+ "ON\r\n"
-				+ "Prisoners.cell_id=CellsByPrisoner.cell_id\r\n"
-				+ "INNER JOIN\r\n"
-				+ "Areas\r\n"
-				+ "ON\r\n"
-				+ "CellsByPrisoner.area_id =Areas.area_id");
-		rs=ps.executeQuery();
-		List<P_C_A> list=new ArrayList<>();
-		while(rs.next()) {
-			list.add(new P_C_A(rs.getInt("prisoner_id"),rs.getString("first_name"),rs.getString("last_name"),(rs.getDate("date_of_birth")).toLocalDate(),rs.getString("nationality"),rs.getString("gender"),rs.getDate("date_of_entry").toLocalDate(),rs.getDate("release_date").toLocalDate(),rs.getInt("cell_id"),rs.getString("conviction"),rs.getString("punishment"),rs.getString("religion"),rs.getString("image"),
-					rs.getInt("cell_number"),rs.getString("status"),rs.getString("status"),rs.getString("size"),rs.getInt("Floor_N"),rs.getInt("area_id"),rs.getString("area_name"),rs.getString("description"),rs.getString("areas_location_description")));
-		}
-		return list;
-		
-	}
 	
 	public static void deleteByID(int a,String table,String key) throws SQLException {
 		ps=ConnectToDB.getConn().prepareStatement("DELETE FROM "+ table +" WHERE "+key+"="+a);
 		ps.executeUpdate();
 		ps.close();
+	}
+public static List<P_C_A> selectTablePrionersEmployment() throws SQLException{
+		
+		ps=ConnectToDB.getConn().prepareStatement("SELECT PrisonerEmployment.employer_name FROM Wardens\r\n"
+				+ "INNER JOIN WorkShiftsByWarden ON Wardens.shift_number = WorkShiftsByWarden.shift_number\r\n"
+				+ "INNER JOIN Areas ON WorkShiftsByWarden.area_id = Areas.area_id\r\n"
+				+ "INNER JOIN CellsByPrisoner ON Areas.area_id = CellsByPrisoner.area_id\r\n"
+				+ "INNER JOIN Prisoners ON CellsByPrisoner.cell_id = Prisoners.cell_id\r\n"
+				+ "INNER JOIN PrisonerEmployment ON Prisoners.emId = PrisonerEmployment.employment_id");
+		rs=ps.executeQuery();
+		List<P_C_A> list=new ArrayList<>();
+		while(rs.next()) {
+			list.add(new P_C_A(rs.getInt("warden_id"),rs.getString("employer_name")));
+		}
+		return list;
+		
+	}
+	public static void UpdateEmployer(String employmentname, int id) throws SQLException{
+		ps = ConnectToDB.getConn().prepareStatement("UPDATE PrisonerEmployment SET employer_name= " + employmentname + "WHERE prisoner_id= " + id);
+		ps.executeUpdate();
+		ConnectToDB.getConn().close();	
 	}
 
 }	

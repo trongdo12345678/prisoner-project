@@ -7,6 +7,7 @@ import java.util.List;
 
 import database.ConnectToDB;
 import entity.Areas;
+import entity.HealthByPrisoner;
 import entity.Prisoners;
 import entity.Wardens;
 public class AreasDAO {
@@ -33,5 +34,20 @@ public class AreasDAO {
 			list.add(new Areas(rs.getInt("area_id"),rs.getString("area_name"),rs.getString("description"),rs.getString("areas_location_description")));
 		}
 		return list;
+	}
+	public static void updateAreas(Areas ar) throws SQLException {
+		ps=ConnectToDB.getConn().prepareStatement("UPDATE Areas SET "
+				+ "area_name =?,"
+				+ "description =?,"
+				+ "areas_location_description =?"	
+				+ " WHERE area_id=?");
+		
+		 	ps.setString(1, ar.getAreaName());
+		    ps.setString(2, ar.getDescription());
+		    ps.setString(3, ar.getAreasLocationDescription());
+		    ps.setInt(4, ar.getAreaId());
+		    
+		ps.executeUpdate();
+		ConnectToDB.getConn().close();
 	}
 }

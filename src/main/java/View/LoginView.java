@@ -217,6 +217,7 @@ public class LoginView extends JFrame {
 						if(acc.getUsername().equals(username)) {
 							if(acc.getActive()==1) {
 								this.setVisible(false);
+								Wardens.wardenId = acc.getWarden_id();
 								User_view qlsv=new User_view();
 								qlsv.setVisible(true);
 								return;
@@ -238,6 +239,6 @@ public class LoginView extends JFrame {
 		
 	}
 	protected void lblNewLabel_1MouseClicked(MouseEvent e) {
-		this.setVisible(false);
+		this.dispose();
 	}
 }

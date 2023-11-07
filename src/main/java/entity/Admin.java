@@ -6,7 +6,7 @@ public class Admin {
 	private String username;
 	private String password;
 	private String email;
-	private int key;
+	private static int key;
 	/**
 	 * @param username
 	 * @param password
@@ -54,7 +54,7 @@ public class Admin {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getKey() {
+	public static int getKey() {
 		return key;
 	}
 	public void setKey(int key) {
